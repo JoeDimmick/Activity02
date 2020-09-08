@@ -42,6 +42,7 @@ yarn-error.log*
 *.answer.*
 testem.log
 /typings
+Activiy02ScreenShot.png
 
 # System Files
 .DS_Store
