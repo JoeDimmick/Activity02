@@ -10,11 +10,13 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 8080
+    port: 8080,
+    historyApiFallback: true
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'javascripts/[name].js'
+    filename: 'javascripts/[name].js',
+    publicPath: '/'
   },
   module: {
     rules: [
