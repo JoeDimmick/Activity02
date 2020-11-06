@@ -12,7 +12,7 @@ export function configureRoutes(app){ // this function needs to be called inside
     router.get('/contact', contactPage)
     router.get('/movies*', indexPage)
     router.get('/api/movies', allMoviesAPI)
-    router.post('/api/contact', contactAPI)
+    router.post('/api/contact', contactAPI) // handles the POST Request from the Client side.
 
     app.use('/', router)
 }

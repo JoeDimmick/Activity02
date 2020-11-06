@@ -29,9 +29,9 @@ export default function ContactForm(){
             message: ""
         },
         validationSchema,
-        onSubmit(values){
+        onSubmit(values){//we want to send a post request to the server to store the message that is being submitted using fetch()
             fetch('/api/contact', {
-                method: "POST",
+                method: "POST", //use POST this is a form
                 headers: {
                     "Content-Type": "application/json"
                 },
