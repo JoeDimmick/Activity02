@@ -22,37 +22,42 @@ export default function MovieList(){
     const history = useHistory()
 
     useEffect(()=> {
-        fetch('/top10.dat')
-        .then(response => response.text()) // this is what happens when the fetch is successfull can have any number of .then
-        .then((data) => {//fetching data as a text response.
-            setMovies(JSON.parse(data, (key, value) => {//parsing the data with JSON.parse and catching any dates
-                const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:.*Z$/                
-                if(typeof value === 'string' && dateFormat.test(value)){
-                    return new Date(value) // returns any strings that match a date formate and returning a Date object with the same value.
-                }
-                return value // if the string is not a date just return the value of the string. Basically catching just the date otherwise pass the string on.
-            }))
-        })
-        .catch(console.error) // if the promise is not successfull.
-    })
+        if(!movies){ // only runs the fetch if movies have not been loaded yet.
+            fetch('/api/movies')
+            .then(response => response.text())
+            .then((data)=> {
+                setMovies(JSON.parse(data, (key, value) =>{
+                    const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:.*Z$/
+                    if(typeof value === 'string' && dateFormat.test(value)){
+                        return new Date(value)
+                    }
+                    return value
+                }))
+            })
+            .catch(console.error)
+        }
+    },8000)
+    // useEffect(()=> {
+    //     fetch('/api/movies')
+    //     .then(response => response.text()) // this is what happens when the fetch is successfull can have any number of .then
+    //     .then((data) => {//fetching data as a text response.
+    //         setMovies(JSON.parse(data, (key, value) => {//parsing the data with JSON.parse and catching any dates
+    //             const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:.*Z$/                
+    //             if(typeof value === 'string' && dateFormat.test(value)){
+    //                 return new Date(value) // returns any strings that match a date formate and returning a Date object with the same value.
+    //             }
+    //             return value // if the string is not a date just return the value of the string. Basically catching just the date otherwise pass the string on.
+    //         }))
+    //     })
+    //     .catch(console.error) // if the promise is not successfull.
+    // })
 
     if(!movies) return <p>Loading ...</p>
 
     return (        
         <MovieContext.Provider value={{movies, setMovies}}>{/*any component in the MovieContext has access to the state. MovieContext is the 'provider' of the state*/}
-            <nav> 
-                <ul>{/*Navigation -  */}
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/movies">List</Link></li>
-                    <li><Link to="/signup">Sign Up</Link></li>
-                    <li><Link to="/about">About</Link></li>
-                </ul>
-                <Route path = "/movies">  
-                {/*
-                added the Add Movie and sort button to the '/movies' rotue (switch case). 
-                Think if '/movies' display buttons 
-                */}
-                    {/*Sort Button*/}
+            <div className="pull-content-right">
+                <Route path = "/movies">
                     <button className="primary" onClick={ 
                         () => {
                             movies.sort((a, b) => a.rating - b.rating)
@@ -60,14 +65,10 @@ export default function MovieList(){
                         }
 
                     }>Sort</button>
-                    {/*Add Movie Button*/}
-                    <button className="primary" onClick={
-                        () => {
-                            history.push('/movies/new')
-                        }
-                    }>Add Movie</button>
-                </Route>                
-            </nav>
+
+                    <button className="primary" onClick={ () =>  history.push('/movies/new') }>Add Movie</button>
+                </Route>
+            </div>               
             <main>
                 <Switch>  {/* Similar to a switch case. */}
                     {/*Like button*/}
@@ -90,7 +91,6 @@ export default function MovieList(){
                     facilitates editing a movie form based on the movie id.
                     */}
                     <Route path="/movies/:mid/edit"><MovieForm></MovieForm></Route>{/*routes to the new movie form*/}
-                    <Route path="/about"><About></About></Route>{/*routes the web view to the about page view*/}
                     <Route path="/signup"><SignupForm></SignupForm></Route>
                     <Redirect from="" to="/movies"/>                    
                     {/*similar to fall through on a switch case. if none of the above cases match then page not found error view*/}

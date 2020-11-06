@@ -20,9 +20,17 @@ let movieSchema = new Schema({
     genre: String,
     year: Number,
     imdbID: String,
+    reviews: [ reviewSchema ],
     added_at: Date,
-    updated_at: Date,
-    reviews: [ reviewSchema ]
+    updated_at: Date
+})
+
+movieSchema.set('toJSON', {
+    virtuals: true,
+    transform: (doc, ret, options) => {
+        delete ret.__v
+        delete ret._id
+    }
 })
 
 //create a model out of the data.
