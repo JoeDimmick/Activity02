@@ -32,9 +32,14 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.5",
     "date-fns": "^2.16.1",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
     "formik": "^2.1.5",
+    "http-errors": "^1.8.0",
     "mongoose": "^5.10.11",
+    "morgan": "^1.10.0",
     "react": "^16.13.1",
     "react-datepicker": "^3.2.2",
     "react-dom": "^16.13.1",

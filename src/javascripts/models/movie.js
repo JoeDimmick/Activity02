@@ -1,29 +1,38 @@
-import mongoose from 'mongoose';
+  import mongoose from 'mongoose';
 
-//Movie Schemas
-
-const Schema = mongoose.Schema //allows the use of just Schema instead of typing mongoose.Schema evertime its needed.
+const Schema = mongoose.Schema;
 
 let reviewSchema = new Schema({
-    comment: String,
-    posted_at: Date
-})
+	comment: String,
+	posted_at: Date
+});
 
 let movieSchema = new Schema({
-    id: Number,
-    title: String,
-    plot: String,
-    poster: String,
-    rated: String,
-    rating: Number,
-    votes: Number,
-    genre: String,
-    year: Number,
-    imdbID: String,
-    added_at: Date,
-    updated_at: Date,
-    reviews: [ reviewSchema ]
+	//id : Number,
+	title: String,
+	plot: String,
+	poster: String,
+	rated: String,
+	rating: Number,
+	votes: Number,
+	genre: String,
+	year: Number,
+	imdbID: String,	
+	releaseDate: Date,
+	// reviews: [ reviewSchema ],
+	added_at: Date,
+	updated_at: Date
+});
+
+movieSchema.virtual('id').get(function(){
+	return this._id.toHexString();
 })
 
-//create a model out of the data.
+movieSchema.set('toJSON', {
+	virtuals: true,
+	transform: (doc, ret, options) => {
+		delete ret.__v
+		delete ret._id
+	}
+})
 export let Movie = mongoose.model("Movie", movieSchema)
