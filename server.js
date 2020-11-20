@@ -9,16 +9,23 @@ import {connect} from './src/javascripts/config/db/connect'
 connect("mongodb://localhost:27017/topmovies")
 
 // create a web server
-export let app = express()
+export let app = express();
 
-app.set('views', path.join(__dirname, 'src', 'javascripts', 'views'))
-app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'src', 'javascripts', 'views'));
+app.set('view engine', 'ejs');
 
-app.use(logger('dev'))
-app.use(express.json())
-app.use(express.urlencoded({extended: false}))
-app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+//Authentication configuration for passport
+import passport from 'passport' 
+import { strategy } from './src/javascripts/config/passport'
+passport.use(strategy);
+app.use(passport.initialize); 
+//create a controller that handles signing in and signing out.
 
 // Routing
 import {configureRoutes} from './src/javascripts/config/routes'
