@@ -28,7 +28,7 @@ export default function MovieList(){
             })
             .catch(console.error)
         }
-    },8000)
+    }/*,8000*/)
 
     if(!movies) return <p>Loading ...</p>
 

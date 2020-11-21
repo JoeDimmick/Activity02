@@ -36,11 +36,13 @@ let userSchema = new Schema({
 
 //never store raw password. always hash passwords and store the hash.
 userSchema.methods.setPassword = function(password){
-    console.log('set password in models')
+    //console.log('set password in models')
     //create a string of 16 random bytes and convert to hexadecimal
     this.salt = crypto.randomBytes(16).toString('hex')
+    //console.log(`Salt: ${this.salt}`)
     // use salt to hash the password obtained from the user.
     this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 128, 'sha512').toString('hex')
+    //console.log(`hash: ${this.hash}`)
     //pbkdf2Sync(password, salt, number_of_iterations, key_length, Algorithm)
 }
 

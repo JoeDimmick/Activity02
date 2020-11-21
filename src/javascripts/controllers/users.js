@@ -2,20 +2,22 @@ import passport from 'passport'
 import { User } from '../models/user'
 
 export const registerUserAPI = ( req, res, next ) => { //collect data from the body
-    console.log('registerUserAPI method hit in controllers>user')
+    //console.log('registerUserAPI method hit in controllers>user')
     let user = new User
     user.firstName = req.body.firstName
     user.lastName = req.body.lastName
     user.email = req.body.email
     user.username = req.body.username
     user.setPassword(req.body.password)
+    //console.log(`User: ${user}`)
 
-    usersave(err => { //save the collected data to the DB.
-        console.log('userSave in controllers>user.js')
+    user.save(err => { //save the collected data to the DB.
+        //console.log('userSave in controllers>user.js')
         if(err){
             res.json({success: false, message: "Unable to register user"})
             res.end()
         }else{
+            res.status(200)
             res.end()
         }
     })

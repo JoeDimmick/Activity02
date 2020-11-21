@@ -42,8 +42,8 @@ export default function SignUpForm(){
                 credentials: 'same-origin', //property that instructs the browser to send the token cookie along with every request.
                 body: JSON.stringify(values)
             }).then((response) => {
-                console.log(error)
-                if(!response.ok) throw Error('Failed to register sss')
+                //console.log(error)
+                if(!response.ok) throw Error('Failed to register')
                 return response.text()
             }).then(() => {
                 toast('Successfully registered', {
@@ -52,7 +52,7 @@ export default function SignUpForm(){
                     }
                 })
             }).catch((error) => {
-                toast('Failed to register aaa', {
+                toast('Failed to register', {
                     onClose: () => {
                         document.location = "/movies"
                     }
