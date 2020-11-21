@@ -11,7 +11,7 @@ export const registerUserAPI = ( req, res, next ) => { //collect data from the b
     user.setPassword(req.body.password)
 
     usersave(err => { //save the collected data to the DB.
-        console.log('userSave in controlers>user.js')
+        console.log('userSave in controllers>user.js')
         if(err){
             res.json({success: false, message: "Unable to register user"})
             res.end()
@@ -36,7 +36,7 @@ export const signUserInAPI = ( req, res, next) => {
                 res.end()
             }
         }
-    })(req,res, next)//authenticate will return a fucntion pass it the request, response and next
+    })(req,res, next)//authenticate will return a function pass it the request, response and next
 }
 
 //set up routes for this in config > routes.

@@ -37,8 +37,10 @@ let userSchema = new Schema({
 //never store raw password. always hash passwords and store the hash.
 userSchema.methods.setPassword = function(password){
     console.log('set password in models')
-    this.salt = crypto.randomBytes(16).toString('hex'); //create a string of 16 random bytes and convert to hexadecimal
-    this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 128, 'sha512').toString('hex'); // use salt to hash the password obtained from the user.
+    //create a string of 16 random bytes and convert to hexadecimal
+    this.salt = crypto.randomBytes(16).toString('hex')
+    // use salt to hash the password obtained from the user.
+    this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 128, 'sha512').toString('hex')
     //pbkdf2Sync(password, salt, number_of_iterations, key_length, Algorithm)
 }
 
@@ -49,20 +51,21 @@ userSchema.methods.isValidPassword = function(password){//password validation.
     return this.hash === hash
 }
 
-//generate token that will be sent from the server to broswer that will identify who the user is.
+//generate token that will be sent from the server to browser that will identify who the user is.
 userSchema.methods.generateJWT = function(){
 
     let expireOn = new Date()
 
     expireOn.setDate(expireOn.getDate() + AUTH_TOKEN_EXPIRES_IN)
 
-    return jwt.sign({ //token signature
+    //token signature
+    return jwt.sign({
         _id: this._id,
         email: this.email,
         firstName: this.firstName,
         lastName: this.lastName,
         exp: parseInt(expireOn.getTime() / 1000)
-    }, APP_SECRET) //signed with our APP_SECRET    
+    }, APP_SECRET)
 }
 
 export let User = mongoose.model("User", userSchema)

@@ -43,7 +43,7 @@ export function configureRoutes(app){// '*' makes this available for all request
     router.get('/movies*', indexPage)
     router.get('/register', indexPage)//route for when you refresh the login/registration page you will not get 'not found page'
     router.get('/signin', indexPage)
-    // Movies API Endpionts
+    // Movies API Endpoints
     router.get('/api/movies', allMoviesAPI ) // GET for finding a document
     router.get('/api/movies/:id', oneMovieAPI ) 
     router.post('/api/movies', createMovieAPI ) // POST creates a new document
