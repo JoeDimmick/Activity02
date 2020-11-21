@@ -47,6 +47,7 @@ export default function MovieForm(){
                 headers: {
                     "Content-Type": "application/json"
                 },
+                credentials: 'same-origin', //property that instructs the browser to send the token cookie along with every request.
                 body: JSON.stringify(values)
             }).then(() => {
                 toast('Successfully submitted', {

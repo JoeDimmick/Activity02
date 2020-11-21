@@ -32,6 +32,7 @@ export default function Movie(props){
 			headers: {
 				"Content-Type": "application/json"
 			},
+			credentials: 'same-origin', //property that instructs the browser to send the token cookie along with every request.
 		}).then(() => {
 			toast('Successfully Deleted', {
 				onClose: () => {

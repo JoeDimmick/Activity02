@@ -29,7 +29,6 @@ body {
 
         ul {
             display: flex;
-            flex: 1;
             list-style: none;
             padding: 0px;
 
@@ -40,6 +39,10 @@ body {
                     text-decoration: none;
                     color: white;
                 }
+            }
+
+            &:first-child{
+                flex: 1;
             }
         }
     }

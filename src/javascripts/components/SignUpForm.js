@@ -14,37 +14,45 @@ export function VHelp({message}){//takes only the message property from the prop
 
 const validationSchema = yup.object({
 
-    name: yup.string().required(),
-    email: yup.string().email().required(),
-    message: yup.string().required()
+    firstName: yup.string().required("Required"),
+    lastName: yup.string().required("Required"),
+    email: yup.string().email("Valid e-mail Required").required("Required"),
+    username: yup.string().required("Required"),
+    password: yup.string().required("Required"),
 })
 
-export default function ContactForm(){
+export default function SignUpForm(){
   
     //validating form with just useFormik
     let {handleSubmit, handleChange, values, errors, setFieldValue} = useFormik({//hook, function that takes 3 arguments. initialvalues, validation function, submition values (a button submit)
         initialValues :{
-            name: "",
+            firstName: "",
+            lastName:"",
             email: "",
-            message: ""
+            username:"",
+            password: ""
         },
         validationSchema,
         onSubmit(values){//we want to send a post request to the server to store the message that is being submitted using fetch()
-            fetch('/api/contact', {
+            fetch('/api/users/register', {
                 method: "POST", //use POST this is a form
                 headers: {
                     "Content-Type": "application/json"
                 },
                 credentials: 'same-origin', //property that instructs the browser to send the token cookie along with every request.
                 body: JSON.stringify(values)
+            }).then((response) => {
+                console.log(error)
+                if(!response.ok) throw Error('Failed to register sss')
+                return response.text()
             }).then(() => {
-                toast('Successfully submitted', {
+                toast('Successfully registered', {
                     onClose: () =>{
                         document.location = "/movies"
                     }
                 })
             }).catch((error) => {
-                toast('Failed to submit', {
+                toast('Failed to register aaa', {
                     onClose: () => {
                         document.location = "/movies"
                     }
@@ -57,12 +65,19 @@ export default function ContactForm(){
     
     return(
     <form onSubmit = {handleSubmit}>
-        <h1> Contact us</h1>
+        <h1>Sign Up</h1>
         <div className = "field">
-            <label htmlFor= "name">Name</label>
+            <label htmlFor= "firstName">First Name</label>
             <div className="control">
-                <input type="text" name="name" id="name" value={values.name} onChange={handleChange}/>
-                <VHelp message={errors.name}/>
+                <input type="text" name="firstName" id="firstName" value={values.firstName} onChange={handleChange}/>
+                <VHelp message={errors.firstName}/>
+            </div>
+        </div>
+        <div className = "field">
+            <label htmlFor= "lastName">Last Name</label>
+            <div className="control">
+                <input type="text" name="lastName" id="lastName" value={values.lastName} onChange={handleChange}/>
+                <VHelp message={errors.lastName}/>
             </div>
         </div>
         <div className = "field">
@@ -73,17 +88,24 @@ export default function ContactForm(){
             </div>
         </div>
         <div className = "field">
-            <label htmlFor= "message">Message</label>
+            <label htmlFor= "username">Username</label>
             <div className="control">
-                <textarea type="text" name="message" id="message" value={values.message} onChange={handleChange}/>
-                <VHelp message={errors.message}/>
+                <input type="text" name="username" id="username" value={values.username} onChange={handleChange}/>
+                <VHelp message={errors.username}/>
+            </div>
+        </div>
+        <div className = "field">
+            <label htmlFor= "password">Password</label>
+            <div className="control">
+                <input type="password" name="password" id="password" value={values.password} onChange={handleChange}/>
+                <VHelp message={errors.password}/>
             </div>
         </div>
         <div className = "field">
             <label htmlFor= ""></label>
             <div className="control">
                 <button className="primary" type="submit">Submit</button>
-                <button className="primary"onClick={() =>history.push('/movies')}>Cancel</button>
+                <button className="primary"onClick={() =>document.location = '/movies'}>Cancel</button>
             </div>
         </div>
     </form>

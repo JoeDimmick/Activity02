@@ -13,38 +13,39 @@ export function VHelp({message}){//takes only the message property from the prop
 }
 
 const validationSchema = yup.object({
-
-    name: yup.string().required(),
-    email: yup.string().email().required(),
-    message: yup.string().required()
+    username: yup.string().required(),
+    password: yup.string().required(),
 })
 
-export default function ContactForm(){
+export default function SignInForm(){
   
     //validating form with just useFormik
     let {handleSubmit, handleChange, values, errors, setFieldValue} = useFormik({//hook, function that takes 3 arguments. initialvalues, validation function, submition values (a button submit)
         initialValues :{
-            name: "",
-            email: "",
-            message: ""
+            username:"",
+            password: ""
         },
         validationSchema,
         onSubmit(values){//we want to send a post request to the server to store the message that is being submitted using fetch()
-            fetch('/api/contact', {
+            fetch('/api/users/signin', {
                 method: "POST", //use POST this is a form
                 headers: {
                     "Content-Type": "application/json"
                 },
                 credentials: 'same-origin', //property that instructs the browser to send the token cookie along with every request.
                 body: JSON.stringify(values)
-            }).then(() => {
-                toast('Successfully submitted', {
+            }).then((response) => {
+                if(!response.ok) throw Error('Failed to sign in')
+                return response.text()
+            })
+            .then(() => {
+                toast('Successfully signed in', {
                     onClose: () =>{
                         document.location = "/movies"
                     }
                 })
             }).catch((error) => {
-                toast('Failed to submit', {
+                toast('Failed to sign in', {
                     onClose: () => {
                         document.location = "/movies"
                     }
@@ -57,33 +58,26 @@ export default function ContactForm(){
     
     return(
     <form onSubmit = {handleSubmit}>
-        <h1> Contact us</h1>
+        <h1>Sign In</h1>
         <div className = "field">
-            <label htmlFor= "name">Name</label>
+            <label htmlFor= "username">Username</label>
             <div className="control">
-                <input type="text" name="name" id="name" value={values.name} onChange={handleChange}/>
-                <VHelp message={errors.name}/>
+                <input type="text" name="username" id="username" value={values.username} onChange={handleChange}/>
+                <VHelp message={errors.username}/>
             </div>
         </div>
         <div className = "field">
-            <label htmlFor= "email">Email</label>
+            <label htmlFor= "password">Password</label>
             <div className="control">
-                <textarea type="text" name="email" id="email" value={values.email} onChange={handleChange}/>
-                <VHelp message={errors.email}/>
-            </div>
-        </div>
-        <div className = "field">
-            <label htmlFor= "message">Message</label>
-            <div className="control">
-                <textarea type="text" name="message" id="message" value={values.message} onChange={handleChange}/>
-                <VHelp message={errors.message}/>
+                <input type="password" name="password" id="password" value={values.password} onChange={handleChange}/>
+                <VHelp message={errors.password}/>
             </div>
         </div>
         <div className = "field">
             <label htmlFor= ""></label>
             <div className="control">
                 <button className="primary" type="submit">Submit</button>
-                <button className="primary"onClick={() =>history.push('/movies')}>Cancel</button>
+                <button className="primary"onClick={() =>document.location = '/movies'}>Cancel</button>
             </div>
         </div>
     </form>

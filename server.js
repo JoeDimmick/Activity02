@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 import passport from 'passport' 
 import { strategy } from './src/javascripts/config/passport'
 passport.use(strategy);
-app.use(passport.initialize); 
+app.use(passport.initialize()); 
 //create a controller that handles signing in and signing out.
 
 // Routing
@@ -33,11 +33,11 @@ configureRoutes(app)
 
 // Handling errors
 app.use(function(req, res, next){
-	res.render('layout', {content: 'error', err: createError(404), title:"Top 10 Movies: Aaron Whipple"})
+	res.render('layout', {content: 'error', err: createError(404), title:"Top 10 Movies: Joseph Dimmick"})
 })
 app.use(function(err, req, res, next){
 	res.status(err.status || 500)
-	res.render('layout', {content: 'error', title:"Top 10 Movies: Aaron Whipple", err: err })
+	res.render('layout', {content: 'error', title:"Top 10 Movies: Joseph Dimmick", err: err })
 })
 
 // Create the web server

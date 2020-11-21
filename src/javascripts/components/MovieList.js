@@ -13,7 +13,9 @@ export default function MovieList(){
 
     useEffect(()=> {
         if(!movies){
-            fetch('/api/movies')
+            fetch('/api/movies',{
+                credentials: 'same-origin', //property that instructs the browser to send the token cookie along with every request.
+            })
             .then(response => response.text())
             .then((data)=> {
                 setMovies(JSON.parse(data, (key, value) =>{
