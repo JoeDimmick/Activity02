@@ -17,23 +17,33 @@ function isSignedIn(req){
     }
 }
 
+function requireSignedIn(req, res, next){
+    if(isSignedIn(req)){
+        next()
+    }else{
+        res.status(401)
+        res.end()
+    }
+}
+
 //for the 'added_by' field.
-// export function getCurrentUser(req){
-//     if(req.cookies.token){
-//         return jwt.decode(req.cookies.token, APP_SECRET)
-//     }else {
-//         return null
-//     }
-// }
+export function getCurrentUser(req){
+    if(req.cookies.token){
+        return jwt.decode(req.cookies.token, APP_SECRET)
+    }else {
+        return null
+    }
+}
 
 
 // this function needs to be called inside our server under Routing.
 export function configureRoutes(app){// '*' makes this available for all requests to see if a user is signed in or not
     app.all('*', (req, res, next)=>{
         app.locals.signedIn = isSignedIn(req)
-        //app.locals.currentUser = getcurrentUser(req) //allows access the current user inside .ejs files using the variable currentUser
+        app.locals.currentUser = getCurrentUser(req) //allows access the current user inside .ejs files using the variable currentUser
         next()
-    })  
+    })
+
     router.get('/', indexPage)
     router.get('/about', aboutPage)
     router.get('/contact', contactPage)    
@@ -46,9 +56,9 @@ export function configureRoutes(app){// '*' makes this available for all request
     // Movies API Endpoints
     router.get('/api/movies', allMoviesAPI ) // GET for finding a document
     router.get('/api/movies/:id', oneMovieAPI ) 
-    router.post('/api/movies', createMovieAPI ) // POST creates a new document
-    router.put('/api/movies/:id', updateMovieAPI ) // PUT edits or updates a document
-    router.delete('/api/movies/:id', deleteMovieAPI ) // DELETE deletes a document
+    router.post('/api/movies', requireSignedIn, createMovieAPI ) // POST creates a new document requires user authentication.
+    router.put('/api/movies/:id', requireSignedIn, updateMovieAPI ) // PUT edits or updates a document
+    router.delete('/api/movies/:id', requireSignedIn, deleteMovieAPI ) // DELETE deletes a document
 
     app.use('/', router)
 

@@ -20,7 +20,7 @@ const customStyles = {
 };
 
 export default function Movie(props){
-	let { movies, setMovies } = useContext(MovieContext)
+	let { movies, setMovies, authenticated, setAuthenticated } = useContext(MovieContext)
 	let[modalOpen, setModalOpen] = useState(false)
 	const onLike = props.onLike
 	const m = props.movie
@@ -68,7 +68,10 @@ export default function Movie(props){
 			<button className="primary" onClick={
 				()=> history.push(`/movies/${m.id}/edit`)
 			}>Edit</button>
-			<button className="primary" onClick={()=> setModalOpen(true)}>Delete</button>
+			<button className="primary" onClick={()=>{
+				if(authenticated) setModalOpen(true)
+				else document.location = '/signin'
+				}}>Delete</button>
 		</div>
 
 	  	<Modal isOpen={modalOpen} onRequestClose={()=>setModalOpen(false)}

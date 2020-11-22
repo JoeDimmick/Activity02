@@ -3,12 +3,15 @@ import Movie from './Movie'
 import {Route, Switch, Link, Redirect, useHistory} from 'react-router-dom'
 import { About, ErrorNotFound, SignupForm } from './Pages'
 import MovieForm from './MovieForm'
+import {useCookies} from "react-cookie";
 
 export const MovieContext = createContext() //allows me to share the state with other components. the provider of the contract.
 
 export default function MovieList(){
     
     const [movies, setMovies] = useState(); //deconstruction. Usestate returns an array
+    const [cookie, setCookie, removeCookie] = useCookies(['token'])
+    let [authenticated, setAuthenticated] = useState(cookie.token !== undefined) //if the cookie has been given a file you are authenticated.
     const history = useHistory()
 
     useEffect(()=> {
@@ -33,7 +36,7 @@ export default function MovieList(){
     if(!movies) return <p>Loading ...</p>
 
     return (        
-        <MovieContext.Provider value={{movies, setMovies}}>
+        <MovieContext.Provider value={{movies, setMovies, authenticated, setAuthenticated}}>
             <div className="pull-content-right">
                 <Route path = "/movies">
                     <button className="primary" onClick={ 

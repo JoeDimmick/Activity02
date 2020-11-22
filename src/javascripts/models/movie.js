@@ -19,10 +19,10 @@ let movieSchema = new Schema({
 	year: Number,
 	imdbID: String,	
 	releaseDate: Date,
-	// reviews: [ reviewSchema ],
+	reviews: [ reviewSchema ],
 	added_at: Date,
 	updated_at: Date,
-	//added_by: {type: Schema.Types.ObjectId,  ref: "User"} //adds a field to track who added a document.
+	added_by: {type: Schema.Types.ObjectId,  ref: "User"} //adds a field to track who added a document.
 });
 
 movieSchema.virtual('id').get(function(){

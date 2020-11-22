@@ -14,6 +14,7 @@ import App from './components/App' //importing the App from components file.
 import ContactForm from './components/ContactForm' //importing the contactform from the components file.
 import  SignUpForm  from './components/SignUpForm'
 import  SignInForm  from './components/SignInForm'
+import SignOut from "./components/SignOut";
 
 if(document.getElementById('main')){ //If the document has the element 'main' load the App component.
     ReactDOM.render(<App/>, document.getElementById('main'))

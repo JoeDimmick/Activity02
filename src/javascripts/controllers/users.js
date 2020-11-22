@@ -31,7 +31,7 @@ export const signUserInAPI = ( req, res, next) => {
         }else{
             if(user){//generate token for user
                 let token = user.generateJWT()
-                res.cookie("token", token, {maxAge: 1000 * 60 * 3 /* 60 * 24*/}) //package the signed token as a cookie and send it as part of the signed response.
+                res.cookie("token", token, {maxAge: 1000 * 60 * 60 * 24}) //package the signed token as a cookie and send it as part of the signed response.
                 res.end()
             }else{
                 res.status(401).json(err)//if user is not found report 401 : unauthorized error
